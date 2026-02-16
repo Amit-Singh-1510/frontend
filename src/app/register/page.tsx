@@ -1,15 +1,8 @@
 "use client";
-declare global {
-  interface Window {
-    recaptchaVerifier: any;
-  }
-}
 import { useState } from 'react';
 import axios from 'axios';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
-import { auth } from '../../firebase';
-import { RecaptchaVerifier, signInWithPhoneNumber, ConfirmationResult } from "firebase/auth";
 
 export default function Register() {
   const [step, setStep] = useState(1);
@@ -19,65 +12,37 @@ export default function Register() {
   const [name, setName] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
-  // State for Firebase result
-  const [confirmationResult, setConfirmationResult] = useState<any>(null); // Use 'any' or ConfirmationResult if imported
   const router = useRouter();
 
   const handleGetOtp = async (e: React.FormEvent) => {
     e.preventDefault();
-    setError('');
-    const fullMobile = "+91" + mobile;
-
     try {
-      // 1. Check if user exists on backend
-      await axios.post('http://localhost:5000/api/auth/register/check-user', { mobile });
-
-      // 2. Initialize Recaptcha
-      if (!window.recaptchaVerifier) {
-        window.recaptchaVerifier = new RecaptchaVerifier(auth, 'recaptcha-container', {
-            'size': 'invisible',
-            'callback': (response: any) => {
-              // reCAPTCHA solved
-            }
-          });
+      const res = await axios.post('http://localhost:5000/api/auth/register/otp', { mobile });
+      
+      if (res.data.otp) {
+        setGeneratedOtp(res.data.otp); 
+        alert(`OTP Sent (Dev Mode): ${res.data.otp}`); 
+      } else {
+        alert('OTP Sent to your mobile number. Please check.');
       }
-
-      // 3. Send OTP
-      const appVerifier = window.recaptchaVerifier;
-      const confirmation = await signInWithPhoneNumber(auth, fullMobile, appVerifier);
-      setConfirmationResult(confirmation);
       
       setStep(2);
-      alert('OTP Sent via Firebase!');
     } catch (err: any) {
-      console.error(err);
-      setError(err.response?.data?.msg || err.message || 'Error sending OTP');
+      setError(err.response?.data?.msg || 'Error sending OTP');
     }
   };
 
   const handleVerify = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!confirmationResult) return;
-
     try {
-      // 1. Verify OTP with Firebase
-      await confirmationResult.confirm(otp);
-      
-      // 2. Register User in Backend
       const res = await axios.post('http://localhost:5000/api/auth/register/verify', {
-        mobile, 
-        otp: "FIREBASE_VERIFIED", 
-        name, 
-        password,
-        isFirebaseVerified: true 
+        mobile, otp, name, password
       });
-
       localStorage.setItem('token', res.data.token);
       localStorage.setItem('user', JSON.stringify(res.data.user));
       router.push('/');
     } catch (err: any) {
-      console.error(err);
-      setError(err.response?.data?.msg || 'Verification failed (Invalid OTP)');
+      setError(err.response?.data?.msg || 'Verification failed');
     }
   };
 
@@ -99,23 +64,17 @@ export default function Register() {
           <form className="mt-8 space-y-6" onSubmit={handleGetOtp}>
             <div>
               <label htmlFor="mobile" className="sr-only">Mobile Number</label>
-              <div className="relative">
-                <span className="absolute left-3 top-3 text-gray-500 font-medium">+91</span>
-                <input
-                  id="mobile"
-                  name="mobile"
-                  type="tel"
-                  required
-                  className="appearance-none rounded-md block w-full pl-12 pr-3 py-3 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm dark:bg-gray-700 dark:text-white dark:border-gray-600"
-                  placeholder="Mobile Number"
-                  value={mobile}
-                  onChange={(e) => setMobile(e.target.value)}
-                />
-              </div>
+              <input
+                id="mobile"
+                name="mobile"
+                type="tel"
+                required
+                className="appearance-none rounded-md relative block w-full px-3 py-3 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm dark:bg-gray-700 dark:text-white dark:border-gray-600"
+                placeholder="Mobile Number"
+                value={mobile}
+                onChange={(e) => setMobile(e.target.value)}
+              />
             </div>
-            
-            <div id="recaptcha-container"></div>
-            
             <div>
               <button
                 type="submit"

@@ -27,6 +27,8 @@ export default function Navbar() {
     }
   }, []);
 
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+
   const toggleDarkMode = () => {
     if (darkMode) {
       document.documentElement.classList.remove('dark');
@@ -44,6 +46,7 @@ export default function Navbar() {
     localStorage.removeItem('user');
     setUser(null);
     router.push('/login');
+    setIsMobileMenuOpen(false);
   };
 
   return (
@@ -55,6 +58,7 @@ export default function Navbar() {
             <span className="ml-2 text-xl font-bold text-gray-800 dark:text-white">Doctor Transport</span>
           </div>
           
+          {/* Desktop Menu */}
           <div className="hidden md:flex space-x-8 items-center">
             <Link href="/" className="text-gray-700 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400 font-medium">Home</Link>
             <a href="#services" className="text-gray-700 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400 font-medium">Services</a>
@@ -82,8 +86,54 @@ export default function Navbar() {
               </div>
             )}
           </div>
+
+          {/* Mobile Menu Button */}
+          <div className="md:hidden flex items-center">
+            <button onClick={toggleDarkMode} className="p-2 mr-4 rounded-full hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors">
+              {darkMode ? <FaSun className="text-yellow-400" /> : <FaMoon className="text-gray-600" />}
+            </button>
+            <button
+              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+              className="text-gray-700 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400 focus:outline-none"
+            >
+              <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                {isMobileMenuOpen ? (
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                ) : (
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+                )}
+              </svg>
+            </button>
+          </div>
         </div>
       </div>
+
+      {/* Mobile Menu Dropdown */}
+      {isMobileMenuOpen && (
+        <div className="md:hidden bg-white dark:bg-gray-900 border-t border-gray-100 dark:border-gray-800 shadow-lg">
+          <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+            <Link href="/" onClick={() => setIsMobileMenuOpen(false)} className="block px-3 py-2 rounded-md text-base font-medium text-gray-700 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400 hover:bg-gray-50 dark:hover:bg-gray-800">Home</Link>
+            <a href="#services" onClick={() => setIsMobileMenuOpen(false)} className="block px-3 py-2 rounded-md text-base font-medium text-gray-700 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400 hover:bg-gray-50 dark:hover:bg-gray-800">Services</a>
+            <a href="#booking" onClick={() => setIsMobileMenuOpen(false)} className="block px-3 py-2 rounded-md text-base font-medium text-gray-700 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400 hover:bg-gray-50 dark:hover:bg-gray-800">Booking</a>
+            <a href="#contact" onClick={() => setIsMobileMenuOpen(false)} className="block px-3 py-2 rounded-md text-base font-medium text-gray-700 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400 hover:bg-gray-50 dark:hover:bg-gray-800">Contact</a>
+            
+            {user ? (
+              <div className="pt-4 border-t border-gray-200 dark:border-gray-700">
+                <div className="flex items-center px-3 mb-3">
+                  <FaUser className="bg-indigo-100 p-1 rounded-full h-8 w-8 text-indigo-600 mr-2" />
+                  <span className="text-gray-800 dark:text-white font-medium">{user.name || 'User'}</span>
+                </div>
+                <button onClick={logout} className="block w-full text-left px-3 py-2 rounded-md text-base font-medium text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20">Logout</button>
+              </div>
+            ) : (
+              <div className="pt-4 border-t border-gray-200 dark:border-gray-700 grid grid-cols-2 gap-4 px-3">
+                <Link href="/login" onClick={() => setIsMobileMenuOpen(false)} className="text-center px-4 py-2 border border-indigo-600 text-indigo-600 rounded-md font-medium hover:bg-indigo-50 dark:hover:bg-indigo-900/20 transition-colors">Login</Link>
+                <Link href="/register" onClick={() => setIsMobileMenuOpen(false)} className="text-center px-4 py-2 bg-indigo-600 text-white rounded-md font-medium hover:bg-indigo-700 transition-colors">Register</Link>
+              </div>
+            )}
+          </div>
+        </div>
+      )}
     </nav>
   );
 }

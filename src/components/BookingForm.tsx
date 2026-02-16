@@ -42,6 +42,7 @@ export default function BookingForm() {
                 placeholder="City, State"
                 className="w-full px-4 py-3 rounded-lg bg-gray-100 dark:bg-gray-700 border-transparent focus:border-indigo-500 focus:bg-white dark:focus:bg-gray-600 focus:ring-0 text-gray-900 dark:text-white transition-colors"
                 required 
+                suppressHydrationWarning
               />
             </div>
             <div>
@@ -54,6 +55,7 @@ export default function BookingForm() {
                 placeholder="City, State"
                 className="w-full px-4 py-3 rounded-lg bg-gray-100 dark:bg-gray-700 border-transparent focus:border-indigo-500 focus:bg-white dark:focus:bg-gray-600 focus:ring-0 text-gray-900 dark:text-white transition-colors"
                 required 
+                suppressHydrationWarning
               />
             </div>
             <div>
@@ -65,6 +67,7 @@ export default function BookingForm() {
                 onChange={handleChange}
                 className="w-full px-4 py-3 rounded-lg bg-gray-100 dark:bg-gray-700 border-transparent focus:border-indigo-500 focus:bg-white dark:focus:bg-gray-600 focus:ring-0 text-gray-900 dark:text-white transition-colors"
                 required 
+                suppressHydrationWarning
               />
             </div>
             <div>
@@ -74,6 +77,7 @@ export default function BookingForm() {
                 value={formData.truckType}
                 onChange={handleChange}
                 className="w-full px-4 py-3 rounded-lg bg-gray-100 dark:bg-gray-700 border-transparent focus:border-indigo-500 focus:bg-white dark:focus:bg-gray-600 focus:ring-0 text-gray-900 dark:text-white transition-colors"
+                suppressHydrationWarning
               >
                 <option value="container">Container (Closed)</option>
                 <option value="open">Open Body</option>
@@ -91,10 +95,11 @@ export default function BookingForm() {
                 placeholder="e.g. 10"
                 className="w-full px-4 py-3 rounded-lg bg-gray-100 dark:bg-gray-700 border-transparent focus:border-indigo-500 focus:bg-white dark:focus:bg-gray-600 focus:ring-0 text-gray-900 dark:text-white transition-colors"
                 required 
+                suppressHydrationWarning
               />
             </div>
             <div className="md:col-span-2 mt-4">
-              <button type="submit" className="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-4 rounded-lg transition-all transform hover:scale-[1.02] shadow-lg">
+              <button type="submit" suppressHydrationWarning className="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-4 rounded-lg transition-all transform hover:scale-[1.02] shadow-lg">
                 Get Quote & Book
               </button>
             </div>
