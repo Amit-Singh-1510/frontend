@@ -1,12 +1,12 @@
 "use client";
-import { useState, useEffect } from 'react';
+import { useState, useEffect, Suspense } from 'react';
 import axios from 'axios';
 import { API_URL } from '@/config';
 import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import { FaTruck, FaUser, FaBuilding, FaArrowLeft, FaCamera, FaCheck } from 'react-icons/fa';
 
-export default function Register() {
+function RegisterContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   
@@ -20,9 +20,6 @@ export default function Register() {
   const [mobile, setMobile] = useState('');
   const [otp, setOtp] = useState('');
 
-  // ... (rest of state)
-
-  
   // Registration Data
   const [role, setRole] = useState('business');
   const [name, setName] = useState('');
@@ -62,7 +59,7 @@ export default function Register() {
     setError('');
     setLoading(true);
     try {
-      const res = await axios.post('http://localhost:5000/api/auth/register/otp', { mobile });
+      const res = await axios.post(`${API_URL}/api/auth/register/otp`, { mobile });
       // Show OTP in a cleaner way or toast, but for now alert is okay for "simulated" feedback
       if (res.data.otp) {
         alert(`${res.data.msg}. OTP: ${res.data.otp}`);
@@ -310,5 +307,13 @@ export default function Register() {
         </div>
       </div>
     </div>
+  );
+}
+
+export default function Register() {
+  return (
+    <Suspense fallback={<div className="min-h-screen flex items-center justify-center">Loading...</div>}>
+      <RegisterContent />
+    </Suspense>
   );
 }
