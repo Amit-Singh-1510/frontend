@@ -9,9 +9,18 @@ export default function Register() {
   const router = useRouter();
   const searchParams = useSearchParams();
   
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
   const [step, setStep] = useState(1);
   const [mobile, setMobile] = useState('');
   const [otp, setOtp] = useState('');
+
+  // ... (rest of state)
+
   
   // Registration Data
   const [role, setRole] = useState('business');
@@ -113,7 +122,7 @@ export default function Register() {
       if (role === 'owner') {
         router.push('/dashboard/owner');
       } else {
-        router.push('/dashboard'); 
+        router.push('/dashboard/client'); 
       }
     } catch (err: any) {
       setError(err.response?.data?.msg || 'Verification failed');
@@ -121,6 +130,10 @@ export default function Register() {
       setLoading(false);
     }
   };
+
+  if (!mounted) {
+    return null;
+  }
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-gray-900 py-12 px-4 sm:px-6 lg:px-8 bg-[url('/grid-bg.svg')]">

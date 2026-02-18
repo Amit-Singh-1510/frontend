@@ -16,8 +16,12 @@ export default function Login() {
       const res = await axios.post('http://localhost:5000/api/auth/login', { mobile, password });
       localStorage.setItem('token', res.data.token);
       localStorage.setItem('user', JSON.stringify(res.data.user));
-      // Force reload to update navbar or use context (but reloading is simpler for now)
-      window.location.href = '/'; 
+      const user = res.data.user;
+      if (user.role === 'owner') {
+          window.location.href = '/dashboard/owner';
+      } else {
+          window.location.href = '/dashboard/client';
+      }
     } catch (err: any) {
       setError(err.response?.data?.msg || 'Invalid credentials');
     }
