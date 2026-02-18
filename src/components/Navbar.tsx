@@ -64,6 +64,7 @@ export default function Navbar() {
             <a href="#services" className="text-gray-700 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400 font-medium">Services</a>
             <a href="#booking" className="text-gray-700 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400 font-medium">Booking</a>
             <a href="#contact" className="text-gray-700 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400 font-medium">Contact</a>
+            <Link href="/partner" className="text-gray-700 dark:text-gray-300 hover:text-indigo-600 dark:hover:text-indigo-400 font-medium border border-gray-300 dark:border-gray-600 px-3 py-1 rounded-md hover:border-indigo-600 transition-colors">Partner with Us</Link>
             
             <button onClick={toggleDarkMode} className="p-2 rounded-full hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors">
               {darkMode ? <FaSun className="text-yellow-400" /> : <FaMoon className="text-gray-600" />}
