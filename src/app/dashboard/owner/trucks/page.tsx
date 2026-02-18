@@ -1,6 +1,7 @@
 "use client";
 import { useEffect, useState } from 'react';
 import axios from 'axios';
+import { API_URL } from '@/config';
 import { FaPlus, FaTrash, FaEdit } from 'react-icons/fa';
 
 interface Truck {
@@ -27,7 +28,7 @@ export default function MyTrucks() {
   const fetchTrucks = async () => {
     try {
       const token = localStorage.getItem('token');
-      const res = await axios.get('http://localhost:5000/api/trucks', {
+      const res = await axios.get(`${API_URL}/api/trucks`, {
         headers: { 'x-auth-token': token }
       });
       setTrucks(res.data);
@@ -46,7 +47,7 @@ export default function MyTrucks() {
     e.preventDefault();
     try {
       const token = localStorage.getItem('token');
-      await axios.post('http://localhost:5000/api/trucks', formData, {
+      await axios.post(`${API_URL}/api/trucks`, formData, {
         headers: { 'x-auth-token': token }
       });
       setShowModal(false);
@@ -69,7 +70,7 @@ export default function MyTrucks() {
     if (!confirm('Are you sure you want to delete this truck?')) return;
     try {
         const token = localStorage.getItem('token');
-        await axios.delete(`http://localhost:5000/api/trucks/${id}`, {
+        await axios.delete(`${API_URL}/api/trucks/${id}`, {
             headers: { 'x-auth-token': token }
         });
         fetchTrucks();

@@ -1,6 +1,7 @@
 "use client";
 import React, { useState } from 'react';
 import axios from 'axios';
+import { API_URL } from '@/config';
 import { motion } from 'framer-motion';
 
 import { FaCheckCircle } from 'react-icons/fa';
@@ -22,7 +23,7 @@ export default function ContactForm() {
     e.preventDefault();
     setStatus('Sending...');
     try {
-      await axios.post('http://localhost:5000/api/contact', formData);
+      await axios.post(`${API_URL}/api/contact`, formData);
       setStatus('Message sent successfully!');
       setFormData({ name: '', email: '', phone: '', message: '' });
     } catch (err: any) {

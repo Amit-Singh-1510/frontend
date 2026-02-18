@@ -1,6 +1,7 @@
 "use client";
 import { useState, useEffect } from 'react';
 import axios from 'axios';
+import { API_URL } from '@/config';
 import { FaBox, FaMapMarkerAlt, FaCalendarAlt, FaTruck, FaClock } from 'react-icons/fa';
 
 export default function MyLoads() {
@@ -16,7 +17,7 @@ export default function MyLoads() {
     try {
       const token = localStorage.getItem('token');
       // Assuming GET /api/loads/my returns loads posted by the user
-      const res = await axios.get('http://localhost:5000/api/loads/my', {
+      const res = await axios.get(`${API_URL}/api/loads/my`, {
         headers: { 'x-auth-token': token }
       });
       setLoads(res.data);

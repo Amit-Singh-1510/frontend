@@ -1,6 +1,7 @@
 "use client";
 import { useEffect, useState } from 'react';
 import axios from 'axios';
+import { API_URL } from '@/config';
 
 interface Booking {
     _id: string;
@@ -27,7 +28,7 @@ export default function Bookings() {
     const fetchBookings = async () => {
         try {
             const token = localStorage.getItem('token');
-            const res = await axios.get('http://localhost:5000/api/bookings', {
+            const res = await axios.get(`${API_URL}/api/bookings`, {
                 headers: { 'x-auth-token': token }
             });
             setBookings(res.data);
@@ -45,7 +46,7 @@ export default function Bookings() {
     const updateStatus = async (id: string, status: string) => {
         try {
             const token = localStorage.getItem('token');
-            await axios.put(`http://localhost:5000/api/bookings/${id}/status`, { status }, {
+            await axios.put(`${API_URL}/api/bookings/${id}/status`, { status }, {
                 headers: { 'x-auth-token': token }
             });
             fetchBookings(); // Refresh

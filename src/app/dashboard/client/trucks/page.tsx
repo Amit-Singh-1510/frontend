@@ -1,6 +1,7 @@
 "use client";
 import { useState, useEffect } from 'react';
 import axios from 'axios';
+import { API_URL } from '@/config';
 import { FaTruck, FaMapMarkerAlt, FaStar, FaPhone, FaSearch } from 'react-icons/fa';
 
 export default function FindTrucks() {
@@ -18,7 +19,7 @@ export default function FindTrucks() {
       setLoadingLoads(true);
       try {
           const token = localStorage.getItem('token');
-      const res = await axios.get('http://localhost:5000/api/loads/my?status=Open', {
+      const res = await axios.get(`${API_URL}/api/loads/my?status=Open`, {
              headers: { 'x-auth-token': token }
           });
           setUserLoads(res.data);
@@ -38,7 +39,7 @@ export default function FindTrucks() {
       if (!selectedTruck) return;
       try {
           const token = localStorage.getItem('token');
-          await axios.post('http://localhost:5000/api/bookings', {
+          await axios.post(`${API_URL}/api/bookings`, {
               loadId,
               truckId: selectedTruck._id,
               ownerId: selectedTruck.owner._id
@@ -56,7 +57,7 @@ export default function FindTrucks() {
     setLoading(true);
     try {
       const query = new URLSearchParams(filters as any).toString();
-      const res = await axios.get(`http://localhost:5000/api/trucks/search?${query}`);
+      const res = await axios.get(`${API_URL}/api/trucks/search?${query}`);
       setTrucks(res.data);
     } catch (err) {
       console.error('Error fetching trucks:', err);

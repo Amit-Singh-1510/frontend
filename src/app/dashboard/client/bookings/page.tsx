@@ -1,6 +1,7 @@
 "use client";
 import { useState, useEffect } from 'react';
 import axios from 'axios';
+import { API_URL } from '@/config';
 import { FaTruck, FaMapMarkerAlt, FaCalendarAlt, FaRupeeSign, FaCheckCircle, FaHourglassHalf, FaTimesCircle } from 'react-icons/fa';
 
 export default function Bookings() {
@@ -15,7 +16,7 @@ export default function Bookings() {
     setLoading(true);
     try {
       const token = localStorage.getItem('token');
-      const res = await axios.get('http://localhost:5000/api/bookings', {
+      const res = await axios.get(`${API_URL}/api/bookings`, {
         headers: { 'x-auth-token': token }
       });
       setBookings(res.data);

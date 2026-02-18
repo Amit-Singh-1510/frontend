@@ -1,6 +1,7 @@
 "use client";
 import { useState, useEffect } from 'react';
 import axios from 'axios';
+import { API_URL } from '@/config';
 
 export default function Documents() {
     const [docs, setDocs] = useState<any>({});
@@ -11,7 +12,7 @@ export default function Documents() {
         const fetchDocs = async () => {
             try {
                 const token = localStorage.getItem('token');
-                const res = await axios.get('http://localhost:5000/api/auth/user', {
+                const res = await axios.get(`${API_URL}/api/auth/user`, {
                     headers: { 'x-auth-token': token }
                 });
                 setDocs(res.data.documents || {});

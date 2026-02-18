@@ -1,6 +1,7 @@
 "use client";
 import { useState, useEffect } from 'react';
 import axios from 'axios';
+import { API_URL } from '@/config';
 import { FaUser, FaBuilding, FaPhone, FaMapMarkerAlt, FaSave } from 'react-icons/fa';
 
 export default function Profile() {
@@ -24,7 +25,7 @@ export default function Profile() {
   const fetchProfile = async () => {
       try {
           const token = localStorage.getItem('token');
-          const res = await axios.get('http://localhost:5000/api/auth/user', {
+          const res = await axios.get(`${API_URL}/api/auth/user`, {
               headers: { 'x-auth-token': token }
           });
           setUserData(res.data);

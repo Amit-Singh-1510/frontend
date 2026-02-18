@@ -1,6 +1,7 @@
 "use client";
 import { useEffect, useState } from 'react';
 import axios from 'axios';
+import { API_URL } from '@/config';
 import { FaMoneyCheckAlt, FaHistory, FaDownload, FaTruck } from 'react-icons/fa';
 
 
@@ -18,7 +19,7 @@ export default function Earnings() {
         const fetchEarnings = async () => {
             try {
                 const token = localStorage.getItem('token');
-                const res = await axios.get('http://localhost:5000/api/bookings', {
+                const res = await axios.get(`${API_URL}/api/bookings`, {
                     headers: { 'x-auth-token': token }
                 });
                 

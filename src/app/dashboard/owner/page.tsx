@@ -1,6 +1,7 @@
 "use client";
 import { useEffect, useState } from 'react';
 import axios from 'axios';
+import { API_URL } from '@/config';
 import { FaTruck, FaBoxOpen, FaRupeeSign, FaExclamationCircle } from 'react-icons/fa';
 
 export default function OwnerDashboard() {
@@ -20,8 +21,8 @@ export default function OwnerDashboard() {
         try {
             // Parallel requests
             // In a real app, create a dedicated /stats endpoint
-            const trucksRes = await axios.get('http://localhost:5000/api/trucks', { headers: { 'x-auth-token': token } });
-            const bookingsRes = await axios.get('http://localhost:5000/api/bookings', { headers: { 'x-auth-token': token } });
+            const trucksRes = await axios.get(`${API_URL}/api/trucks`, { headers: { 'x-auth-token': token } });
+            const bookingsRes = await axios.get(`${API_URL}/api/bookings`, { headers: { 'x-auth-token': token } });
             
             const activeTrucks = trucksRes.data.filter((t: any) => t.available).length;
             const pendingBookings = bookingsRes.data.filter((b: any) => b.status === 'Requested').length;

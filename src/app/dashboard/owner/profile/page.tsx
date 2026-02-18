@@ -1,6 +1,7 @@
 "use client";
 import { useState, useEffect } from 'react';
 import axios from 'axios';
+import { API_URL } from '@/config';
 
 export default function Profile() {
     const [profile, setProfile] = useState({
@@ -15,7 +16,7 @@ export default function Profile() {
         const fetchProfile = async () => {
             try {
                 const token = localStorage.getItem('token');
-                const res = await axios.get('http://localhost:5000/api/auth/user', {
+                const res = await axios.get(`${API_URL}/api/auth/user`, {
                     headers: { 'x-auth-token': token }
                 });
                 setProfile(res.data);
@@ -36,7 +37,7 @@ export default function Profile() {
                  <div className="flex items-center space-x-6 mb-8">
                     <div className="h-24 w-24 rounded-full bg-gray-200 dark:bg-gray-700 flex items-center justify-center overflow-hidden">
                         {profile.profilePhoto ? (
-                            <img src={`http://localhost:5000/uploads/${profile.profilePhoto}`} alt="Profile" className="h-full w-full object-cover" />
+                            <img src={`${API_URL}/uploads/${profile.profilePhoto}`} alt="Profile" className="h-full w-full object-cover" />
                         ) : (
                             <span className="text-4xl text-gray-400">?</span>
                         )}

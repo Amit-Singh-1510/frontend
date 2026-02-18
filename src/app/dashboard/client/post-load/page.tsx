@@ -1,6 +1,7 @@
 "use client";
 import { useState } from 'react';
 import axios from 'axios';
+import { API_URL } from '@/config';
 import { useRouter } from 'next/navigation';
 import { FaBox, FaMapMarkerAlt, FaTruck, FaRupeeSign, FaCalendarAlt, FaInfoCircle } from 'react-icons/fa';
 
@@ -35,7 +36,7 @@ export default function PostLoad() {
     setLoading(true);
     try {
       const token = localStorage.getItem('token');
-      await axios.post('http://localhost:5000/api/loads', formData, {
+      await axios.post(`${API_URL}/api/loads`, formData, {
         headers: { 'x-auth-token': token }
       });
       alert('Load posted successfully!');
